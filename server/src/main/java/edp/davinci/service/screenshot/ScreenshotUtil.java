@@ -58,6 +58,9 @@ public class ScreenshotUtil {
     @Value("${screenshot.chromedriver_path:}")
     private String CHROME_DRIVER_PATH;
 
+    @Value("${screenshot.chrome_path:}")
+    private String CHROME_PATH;
+
     @Value("${screenshot.phantomjs_path:}")
     private String PHANTOMJS_PATH;
 
@@ -129,7 +132,6 @@ public class ScreenshotUtil {
 
         Cookie innerCookie = new Cookie("dataworkcloud_inner_request", "true", serverUtils.getAccessAddress(),
                 "/", new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 30L));
-
         driver.manage().addCookie(ticketCookie);
         driver.manage().addCookie(innerCookie);
 
@@ -206,7 +208,6 @@ public class ScreenshotUtil {
         }
 
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.MINUTES);
-        driver.manage().window().maximize();
         driver.manage().window().setSize(new Dimension(DEFAULT_SCREENSHOT_WIDTH, DEFAULT_SCREENSHOT_HEIGHT));
 
         return driver;
@@ -225,7 +226,9 @@ public class ScreenshotUtil {
         System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, CHROME_DRIVER_PATH);
         ChromeOptions options = new ChromeOptions();
 
+        options.setBinary(CHROME_PATH);
         options.addArguments("headless");
+        options.addArguments("start-maximized");
         options.addArguments("no-sandbox");
         options.addArguments("disable-gpu");
         options.addArguments("disable-features=NetworkService");
@@ -260,6 +263,7 @@ public class ScreenshotUtil {
             log.warn("failed to new PhantomJSDriver, we will do it once again", e);
             phantomJSDriver = new PhantomJSDriver();
         }
+        phantomJSDriver.manage().window().maximize();
         return phantomJSDriver;
     }
 
