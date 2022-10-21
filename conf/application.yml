@@ -3,11 +3,11 @@
 # ##################################
 server:
   protocol: http
-  address: 127.0.0.1 # server ip address
+  address: [server_ip] # server ip address
   port:  [server_port] # server port
-  url: http://127.0.0.1:[frontend_port]/dss/visualis # frontend index page full path
+  url: http://[server_ip]:[frontend_port]/dss/visualis # frontend index page full path
   access:
-    address: 127.0.0.1 # frontend address
+    address: [server_ip] # frontend address
     port: [frontend_port] # frontend port
 
 
@@ -17,7 +17,7 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://127.0.0.1:[linkis_eureka_port]/eureka/ # Configuration required
+      defaultZone: http://[server_ip]:[linkis_eureka_port]/eureka/ # Configuration required
   instance:
     metadata-map:
       test: wedatasphere
